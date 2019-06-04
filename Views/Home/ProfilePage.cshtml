@@ -1,0 +1,40 @@
+﻿@using MNBugTracker.Models
+@using Microsoft.AspNet.Identity
+
+@{
+    var db = new ApplicationDbContext();
+    var userId = User.Identity.GetUserId();
+    var user = db.Users.Find(userId);
+    var roleHelper = new MNBugTracker.Helpers.UserRolesHelper();
+}
+
+<main class="main">
+    <div class="page-loader">
+        <div class="page-loader__spinner">
+            <svg viewBox="25 25 50 50">
+                <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+
+    <section @*class="content"*@>
+        <div class="content__inner content__inner--sm">
+            <header class="content__title">
+            </header>
+
+            <div class="card profile">
+                <div class="profile__img">
+                    <img src="@user.ProfilePic" alt="">
+                </div>
+
+                <div class="profile__info">
+                    <ul class="icon-list">
+                        <h4>@user.FirstName @user.LastName <br /> <small>@roleHelper.ListUserRoles(user.Id).FirstOrDefault()</small></h4>
+                        <li><i class="zwicon-mail"></i> @user.Email</li>
+                        @Html.ActionLink("Edit Profile", "EditProfile", "User") | @Html.ActionLink("Change Password", "ResetPassword", "Account")
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

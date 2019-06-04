@@ -1,0 +1,200 @@
+﻿@using MNBugTracker.Models
+@model LoginViewModel
+
+
+@{ 
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Matt's Bug Tracker</title>
+
+    <!-- Vendor styles -->
+    <link href="~/Content/zwicon.min.css" rel="stylesheet" />
+    <link href="~/Content/animate.min.css" rel="stylesheet" />
+
+    <!-- App styles -->
+    <link href="~/Content/app.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="~/images/MNBug.png" />
+
+</head>
+<br />
+<center><h1>Caution! Site under construction</h1></center>
+
+<body data-sa-theme="7">
+    <div class="login">
+        <!-- Login -->
+        <div class="login__block active" id="l-login">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="login__block__header">
+                    <h2>Matt's Bug Tracker</h2>
+                    <i class="zwicon-user-circle"></i>
+                    Hi there! Welcome to my Bug Tracker.<br /> Sign in
+
+                    <div class="actions actions--inverse login__block__actions">
+                        <div class="dropdown">
+                            <i data-toggle="dropdown" class="zwicon-more-h actions__item"></i>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" data-sa-action="login-switch" data-sa-target="#l-register" href="">Create an account</a>
+                                <a class="dropdown-item" data-sa-action="login-switch" data-sa-target="#l-forget-password" href="">Forgot password?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="login__block__body">
+                    <div class="form-group">
+                        <input type="email" name="Email" class="form-control text-center" placeholder="Email Address">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" name="Password" class="form-control text-center" placeholder="Password">
+                    </div>
+
+                    <p>Or @Html.ActionLink("Login", "DemoLogin", "Home") in with a demo user</p>
+
+                    <button type="submit" class="btn btn-theme btn--icon zwicon-checkmark"></button>
+                    @*<a href="" type="submit" class="btn btn-theme btn--icon"><i class="zwicon-checkmark"></i></a>*@
+                </div>
+            }
+        </div>
+
+        <!-- Register -->
+        <div class="login__block" id="l-register">
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "Multipart/Form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="login__block__header">
+                    <i class="zwicon-user-circle"></i>
+                    Create an account
+
+                    <div class="actions actions--inverse login__block__actions">
+                        <div class="dropdown">
+                            <i data-toggle="dropdown" class="zwicon-more-h actions__item"></i>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" data-sa-action="login-switch" data-sa-target="#l-login" href="">Already have an account?</a>
+                                <a class="dropdown-item" data-sa-action="login-switch" data-sa-target="#l-forget-password" href="">Forgot password?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="login__block__body">
+                    <div class="form-group">
+                        <input type="text" name="FirstName" class="form-control text-center" placeholder="FirstName">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="LastName" class="form-control text-center" placeholder="LastName">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="DisplayName" class="form-control text-center" placeholder="Display Name">
+                    </div>
+
+                    <div class="form-group form-group--centered">
+                        <input type="email" name="Email" class="form-control text-center" placeholder="Email Address">
+                    </div>
+
+                    <div class="form-group form-group--centered">
+                        <input type="password" name="Password" class="form-control text-center" placeholder="Password">
+                    </div>
+
+                    <div class="form-group form-group--centered">
+                        <input type="password" name="ConfirmPassword" class="form-control text-center" placeholder="Confirm Password">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="file" name="ProfilePic" class="form-control text-center" placeholder="ProfilePic" id="fileupload">
+                    </div>
+
+                    <button type="submit" class="btn btn-theme btn--icon zwicon-checkmark"></button>
+                </div>
+            }
+        </div>
+        <!-- Forgot Password -->
+        <div class="login__block" id="l-forget-password">
+            @using (Html.BeginForm("ForgotPassword", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="login__block__header">
+                    <i class="zwicon-user-circle"></i>
+                    Forgot Password?
+
+                    <div class="actions actions--inverse login__block__actions">
+                        <div class="dropdown">
+                            <i data-toggle="dropdown" class="zwicon-more-h actions__item"></i>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" data-sa-action="login-switch" data-sa-target="#l-login" href="">Already have an account?</a>
+                                <a class="dropdown-item" data-sa-action="login-switch" data-sa-target="#l-register" href="">Create an account</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="login__block__body">
+                    <p class="mb-5">Forgot your password??? No problem just enter your email and we will get you back in there in no time.</p>
+
+                    <div class="form-group">
+                        <input type="email" name="Email" class="form-control text-center" placeholder="Email Address">
+                    </div>
+
+                    <button type="submit" class="btn btn-theme btn--icon zwicon-checkmark"></button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Older IE warning message -->
+    <!--[if IE]>
+        <div class="ie-warning">
+            <h1>Warning!!</h1>
+            <p>You are using an outdated version of Internet Explorer, please upgrade to any of the following web browsers to access this website.</p>
+
+            <div class="ie-warning__downloads">
+                <a href="http://www.google.com/chrome">
+                    <img src="img/browsers/chrome.png" alt="">
+                </a>
+
+                <a href="https://www.mozilla.org/en-US/firefox/new">
+                    <img src="img/browsers/firefox.png" alt="">
+                </a>
+
+                <a href="http://www.opera.com">
+                    <img src="img/browsers/opera.png" alt="">
+                </a>
+
+                <a href="https://support.apple.com/downloads/safari">
+                    <img src="img/browsers/safari.png" alt="">
+                </a>
+
+                <a href="https://www.microsoft.com/en-us/windows/microsoft-edge">
+                    <img src="img/browsers/edge.png" alt="">
+                </a>
+
+                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                    <img src="img/browsers/ie.png" alt="">
+                </a>
+            </div>
+            <p>Sorry for the inconvenience!</p>
+        </div>
+    <![endif]-->
+    <!-- Javascript -->
+    <!-- Vendors -->
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <!-- App functions and actions -->
+    <script src="~/Scripts/app.min.js"></script>
+</body>
+</html>

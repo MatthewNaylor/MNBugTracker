@@ -1,0 +1,55 @@
+﻿@using MNBugTracker.Helpers
+@model IEnumerable<MNBugTracker.Models.Project>
+
+@{
+    var projectHelper = new ProjectsHelper();
+}
+
+
+<div class="content__inner">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Basic example</h4>
+            <h6 class="card-subtitle">DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table.</h6>
+
+            <div class="table-responsive data-table">
+                <table id="data-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Project Manager</th>
+                            <th>Developer(s)</th>
+                            <th>Submitter(s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var project in Model)
+                        {
+                            <tr>
+                                <td>@project.Name</td>
+                                <td>
+                                    @foreach (var user in projectHelper.UsersOnProjectByRole(project.Id, "ProjectManager"))
+                                    {
+                                        <span>@user.FirstName @user.LastName</span><br />
+                                    }
+                                </td>
+                                <td>
+                                    @foreach (var user in projectHelper.UsersOnProjectByRole(project.Id, "Developer"))
+                                    {
+                                        <span>@user.FirstName @user.LastName</span><br />
+                                    }
+                                </td>
+                                <td>
+                                    @foreach (var user in projectHelper.UsersOnProjectByRole(project.Id, "Submitter"))
+                                    {
+                                        <span>@user.FirstName @user.LastName</span><br />
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,118 @@
+﻿@using MNBugTracker.Models
+@using Microsoft.AspNet.Identity
+
+@model Ticket
+@*<style>
+        #btn-comment{
+            background-color: rgba(255,255,255,.06);
+            color: #fff;
+            padding: .75rem 1rem .85rem;
+            position: relative;
+            border-radius: 2px;
+            -webkit-transition: background-color .3s,color .3s;
+            transition: background-color .3s,color .3s;
+            font-weight: 600;
+            display: block;
+        }
+    </style>*@
+
+@{
+    var db = new ApplicationDbContext();
+    var userId = User.Identity.GetUserId();
+    var user = db.Users.Find(userId);
+    var roleHelper = new MNBugTracker.Helpers.UserRolesHelper();
+}
+
+<div class="col-md-4 offset-4 card">
+    <div class="card-body">
+        <h4 class="card-title, text-center">Add Comment / Upload Attachment</h4>
+    </div>
+</div>
+<br />
+<div class="content__inner">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <br />
+                                <span class="h4">Ticket Comments</span>
+                                <hr />
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-6 offset-3 text-center">
+                                @using (Html.BeginForm("Create", "TicketComments", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    @Html.Hidden("TicketId", (int)ViewBag.TicketId)
+
+                                    <div class="form-group">
+                                        <br />
+                                        <div class="col-md-12">
+                                            @Html.TextArea("CommentBody", null, new { @class = "form-control", placeholder = "Enter Comment Here" })
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn_comment_hover btn-theme_comment">Add Comment</button>
+                                }
+
+                                <hr />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <br />
+                                <span class="h4">Ticket Attachments</span>
+                                <hr />
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-6 offset-3 text-center">
+                                @using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/Form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    @Html.Hidden("TicketId", (int)ViewBag.TicketId)
+
+                                    <div class="form-group">
+                                        <input type="file" name="attachment" class="form-control text-center" placeholder="Attachment">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            @Html.TextArea("Description", null, new { @class = "form-control", placeholder = "Enter description Here" })
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn_comment_hover btn-theme_comment">Add Attachment</button>
+
+                                }
+
+                                <hr />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+

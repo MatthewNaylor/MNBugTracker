@@ -1,0 +1,157 @@
+﻿@using MNBugTracker.Models
+@using Microsoft.AspNet.Identity
+@using MNBugTracker.Helpers
+
+@model Ticket
+@*<style>
+        #btn-comment{
+            background-color: rgba(255,255,255,.06);
+            color: #fff;
+            padding: .75rem 1rem .85rem;
+            position: relative;
+            border-radius: 2px;
+            -webkit-transition: background-color .3s,color .3s;
+            transition: background-color .3s,color .3s;
+            font-weight: 600;
+            display: block;
+        }
+    </style>*@
+
+@{
+    var db = new ApplicationDbContext();
+    var userId = User.Identity.GetUserId();
+    var user = db.Users.Find(userId);
+    var roleHelper = new MNBugTracker.Helpers.UserRolesHelper();
+}
+
+<h4 class="card-title, text-center">Ticket Details</h4>
+<br />
+<div class="content__inner">
+    <div class="table-responsive data-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Owner</th>
+                    <th>Type</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.Project.Name</td>
+                    <td>@Model.OwnerUser.FirstName @Model.OwnerUser.LastName</td>
+                    <td>@Model.TicketType.Name</td>
+                    <td>@Model.TicketPriority.Name</td>
+                    <td>@Model.TicketStatus.Name</td>
+                    <td>@Model.Title</td>
+                    <td>@Model.Description</td>
+                    <td>@Model.Created</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+
+        <div class="card">
+            <div class="card-body">
+                <div class="col-md-12 text-center">
+                    <span class="h4">Ticket Comments</span><br />
+                    @Html.ActionLink("Add Comment", "DetailsUpload", "Tickets", new { id = Model.Id}, new { @class = "btn btn_comment_hover btn-theme_comment" })
+
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @foreach (var comment in Model.TicketComments.OrderByDescending(t => t.Created))
+                        {
+                            <div class="user__commentinfo">
+                                <!-- Comment Img -->
+                                <div class="">
+                                    <img src="@UserHelper.GetUserImage(comment.UserId)" alt="user avatar" class="user__commentimg" />
+                                </div>
+                                <!-- Texts -->
+                                <div class="col-11">
+                                    <h5 class="user__name">
+                                        @user.FirstName @user.LastName
+                                    </h5>
+                                    <h6 class="user__name">
+                                        @roleHelper.ListUserRoles(userId).FirstOrDefault()
+                                    </h6>
+                                    <div class="user__displayname">
+                                        @comment.Created
+                                    </div>
+                                    <p class="user__name comment_text">@comment.CommentBody</p>
+                                    @if (User.IsInRole("Admin") @*|| User.IsInRole("")*@)
+                                    {
+                                        @Html.ActionLink("Edit", "Edit", "TicketComments", new { id = comment.Id }, null)@: | @Html.ActionLink("Delete", "Delete", "TicketComments", new { id = comment.Id }, null)
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="col-md-12 text-center">
+                    <span class="h4">Ticket Attachments</span><br />
+                    @Html.ActionLink("Add Attachment", "DetailsUpload", "Tickets", new { id = Model.Id}, new { @class = "btn btn_comment_hover btn-theme_comment" })
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @foreach (var attachment in Model.TicketAttachments.OrderByDescending(t => t.Created))
+                        {
+                            <div class="user__commentinfo">
+                                <!-- Comment Img -->
+                                <div class="">
+                                    <img src="@UserHelper.GetUserImage(attachment.UserId)" alt="user avatar" class="user__commentimg" />
+                                </div>
+                                <!-- Texts -->
+                                <div class="col-md-8">
+                                    <h5 class="user__name">
+                                        @UserHelper.GetUserFirstName(attachment.UserId) @UserHelper.GetUserLastName(attachment.UserId)
+                                    </h5>
+                                    <h6 class="user__name">
+                                        @roleHelper.ListUserRoles(userId).FirstOrDefault()
+                                    </h6>
+                                    <div class="user__displayname">
+                                        @attachment.Created
+                                    </div>
+                                    <p class="user__name comment_text">@attachment.Description</p>
+                                    @if (User.IsInRole("Admin") || User.IsInRole(""))
+                                    {
+                                        @Html.ActionLink("Edit", "Edit", "TicketAttachments", new { id = attachment.Id }, null)@: | @Html.ActionLink("Delete", "Delete", "TicketAttachments", new { id = attachment.Id }, null)
+                                    }
+                                </div>
+                                <div class="col-md-3">
+                                    <a href=@Url.Content(attachment.FilePath) target="_blank">
+                                        <img class="img-fluid" src="@AttachmentHelper.DisplayImage(attachment.FilePath)" />
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>

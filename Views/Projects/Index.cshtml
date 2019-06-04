@@ -1,0 +1,71 @@
+﻿@using MNBugTracker.Helpers
+@model IEnumerable<MNBugTracker.Models.Project>
+
+@{ 
+    var projectHelper = new ProjectsHelper();
+}
+
+
+<div class="content__inner">
+    <div class="card">
+        <div class="card-body">
+            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+                if (Request.Url.AbsoluteUri.Contains("/Projects/MyIndex"))
+                {
+                    @Html.ActionLink("All Projects", "Index");
+                    <br />
+                    <br />
+                }
+            }
+            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+                @Html.ActionLink("Create", "Create", "Projects");
+            }
+
+            <h4 class="card-title text-center">Projects</h4>
+            <div class="table-responsive data-table">
+                <table id="data-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Project Manager</th>
+                            <th>Developer(s)</th>
+                            <th>Submitter(s)</th>
+                            <th>Links</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var project in Model)
+                        {
+                            <tr>
+                                <td>@project.Name</td>
+                                <td>
+                                    @foreach (var user in projectHelper.UsersOnProjectByRole(project.Id, "ProjectManager"))
+                                    {
+                                        <span>@user.FirstName @user.LastName</span><br />
+                                    }
+                                </td>
+                                <td>
+                                    @foreach (var user in projectHelper.UsersOnProjectByRole(project.Id, "Developer"))
+                                    {
+                                        <span>@user.FirstName @user.LastName</span><br />
+                                    }
+                                </td>
+                                <td>
+                                    @foreach (var user in projectHelper.UsersOnProjectByRole(project.Id, "Submitter"))
+                                    {
+                                        <span>@user.FirstName @user.LastName</span><br />
+                                    }
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Details", "Details", new { id = project.Id }) | @Html.ActionLink("Tickets", "ProjectTicketIndex", "Tickets", new { id = project.Id}, null)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

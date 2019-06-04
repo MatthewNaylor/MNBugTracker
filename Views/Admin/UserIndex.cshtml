@@ -1,0 +1,52 @@
+﻿@using MNBugTracker.Models
+@using MNBugTracker.Helpers
+
+@model IEnumerable<UserViewModel>
+
+<main class="main">
+    <section class="content">
+        <div class="content__inner">
+            <div class="contacts row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-xl-2 col-lg-3 col-sm-4 col-6">
+                        <div class="contacts__item Contact_Box">
+
+                            @if (item.ProfilePic != null)
+                            {
+                                <div class="contacts__img">
+                                    <img class="img-fluid" src="@item.ProfilePic" alt="">
+                                </div>
+                            }
+
+
+
+                            <div class="contacts__info">
+                                <strong>@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</strong>
+                                <small>@Html.DisplayFor(modelItem => item.Email)</small>
+                                <strong>
+                                    @{
+                                        var roleHelper = new UserRolesHelper();
+                                        foreach (var role in roleHelper.ListUserRoles(item.Id))
+                                        {
+                                            @role <br />
+                                        }
+                                    }
+                                </strong>
+
+                            </div>
+                            <br />
+                            @if (User.IsInRole("Admin"))
+                            {
+                                @Html.ActionLink("Assign Role", "ManageMyRole", "Admin", new { id = item.Id }, new { @class = "contacts__btn" })
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</main>
+
+
+

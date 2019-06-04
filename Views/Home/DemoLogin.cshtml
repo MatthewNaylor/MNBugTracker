@@ -1,0 +1,82 @@
+﻿
+
+
+    <div class="row">
+        <div class="col-md-3">
+            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("demoUser", "demoAdmin")
+
+                <div class="card widget-profile">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img src="~/ProfilePictures/DefaultProfilePic.png" class="widget-profile__img" alt="">
+                            <h2 class="card-title">Admin</h2>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn_comment_hover btn-theme_comment">Login</button>
+                </div>
+            }
+        </div>
+        
+
+        <div class="col-md-3">
+            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("demoUser", "demoProjectManager")
+
+
+                <div class="card widget-profile">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img src="~/ProfilePictures/DefaultProfilePic.png" class="widget-profile__img" alt="">
+                            <h2 class="card-title">Project Manager</h2>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn_comment_hover btn-theme_comment">Login</button>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-3">
+            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("demoUser", "demoDeveloper")
+
+
+                <div class="card widget-profile">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img src="~/ProfilePictures/DefaultProfilePic.png" class="widget-profile__img" alt="">
+                            <h2 class="card-title">Developer</h2>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn_comment_hover btn-theme_comment">Login</button>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-3">
+            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("demoUser", "demoSubmitter")
+
+
+                <div class="card widget-profile">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img src="~/ProfilePictures/DefaultProfilePic.png" class="widget-profile__img" alt="">
+                            <h2 class="card-title">Submitter</h2>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn_comment_hover btn-theme_comment">Login</button>
+                </div>
+            }
+        </div>
+        
+    </div>
+

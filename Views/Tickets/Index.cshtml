@@ -1,0 +1,164 @@
+﻿@using MNBugTracker.Helpers
+@model IEnumerable<MNBugTracker.Models.Ticket>
+
+<main class="main">
+    <section class="ticket--content">
+        <div class="content__inner">
+            <header class="content__title">
+                <h1>Tickets <small></small></h1>
+            </header>
+
+            <div class="card">
+                <div class="toolbar toolbar--inner">
+                    <div class="actions">
+                        @*<i id="Search" class="actions__item zwicon-search" data-sa-action="toolbar-search-open" data-toggle="tooltip" data-title="Search"></i>*@
+                            @if (User.IsInRole("Submitter"))
+                            {
+                                <div class="dropdown actions__item d-none d-md-flex" data-toggle="tooltip" data-title="Ticket">
+                                    <i class="zwicon-price-tag" data-toggle="dropdown"></i>
+
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu--active">
+
+                                        <a class="dropdown-item" href="@Url.Action("Create", "Tickets")">Create</a>
+                                    
+                                    </div>
+                                </div>
+                            }
+                            <div class="dropdown actions__item d-none d-md-flex" data-toggle="tooltip" data-title="Severity">
+                                <i class="zwicon-info-circle" data-toggle="dropdown"></i>
+
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu--active">
+                                    @foreach(var prior in Model)
+                                    {
+                                        <a class="dropdown-item" href="">@prior.TicketPriority.Name</a>
+                                    }
+                                    
+                                </div>
+                            </div>
+
+                            <div class="dropdown actions__item d-none d-md-flex" data-toggle="tooltip" data-title="Project">
+                                <i class="zwicon-notebook" data-toggle="dropdown"></i>
+
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu--active">
+                                        <a class="dropdown-item" href="">All Projects</a>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="dropdown actions__item d-none d-md-flex" data-toggle="tooltip" data-title="Assignee">
+                                <i class="zwicon-user-circle" data-toggle="dropdown"></i>
+
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu--active">
+                                    @foreach (var owner in Model)
+                                    {
+                                        <a class="dropdown-item" href="">@owner.OwnerUser.FirstName @owner.OwnerUser.LastName</a>
+                                    }  
+                                </div>
+                            </div>
+
+                            <div class="dropdown actions__item d-none d-md-flex" data-toggle="tooltip" data-title="Sort by">
+                                <i class="zwicon-filter-alt" data-toggle="dropdown"></i>
+
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu--active">
+                                    <a class="dropdown-item" href="">Newest</a>
+                                    <a class="dropdown-item" href="">Oldest</a>
+                                    <a class="dropdown-item" href="">Most Commented</a>
+                                    <a class="dropdown-item" href="">Least Commented</a>
+                                    <a class="dropdown-item" href="">Recently Updated</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="toolbar__search">
+                        <input type="text" placeholder="Search for issues...">
+                        <i class="toolbar__search__close zwicon-arrow-left" data-sa-action="toolbar-search-close"></i>
+                    </div>
+                </div>
+
+                <div class="listview listview--bordered issue-tracker">
+                    @foreach (var ticket in Model)
+                    {
+                        <div class="listview__item">
+                            <img src="@ticket.OwnerUser.ProfilePic" class="avatar-img" alt="">
+
+                            <div class="listview__content text-truncate text-truncate">
+                                <p class="listview__heading">@ticket.OwnerUser.FirstName @ticket.OwnerUser.LastName</p>
+                                <p class="listview__heading">@ticket.Title</p>
+                                <p>@ticket.Description</p>
+                            </div>
+
+                            <div class="issue-tracker__item d-none d-lg-inline">
+                                <span class="badge @TicketHelper.GetStatusClass(ticket.TicketStatus.Name)">@ticket.TicketStatus.Name</span>
+                            </div>
+
+                            <div class="issue-tracker__item d-none d-lg-inline">
+                                <i class=""></i>@ticket.TicketType.Name
+                            </div>
+
+                            <div class="issue-tracker__item d-none d-sm-inline">
+                                <span class="badge @TicketHelper.GetPriorityClass(ticket.TicketPriority.Name)">@ticket.TicketPriority.Name</span>
+                            </div>
+
+                            <div class="issue-tracker__item d-none d-lg-inline">
+                                <i class="zwicon-clock"></i>@ticket.Created
+                            </div>
+
+                            <div class="issue-tracker__item d-none d-sm-inline">
+                                <i class="zwicon-comment"></i>@ticket.TicketComments.Count()
+                            </div>
+
+                            <div class="issue-tracker__item d-none d-sm-inline">
+                                <i class="zwicon-attach-document"></i>@ticket.TicketAttachments.Count()
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zwicon-more-h" data-toggle="dropdown"></i>
+
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu--active dropdown-menu--icon">
+                                        <a href="@Url.Action("Details", "Tickets", new { id = ticket.Id})" class="dropdown-item"><i class="zwicon-checkmark-circle"></i>Respond</a>
+                                        <a href="@Url.Action("MarkAsCompleted", "Tickets", new { id = ticket.Id})" class="dropdown-item"><i class="zwicon-close"></i>Close</a>
+                                        <a href="@Url.Action("Edit", "Tickets", new { id = ticket.Id})" class="dropdown-item"><i class="zwicon-edit-pencil"></i>Edit</a>
+                                        <a href="@Url.Action("Delete", "Tickets", new { id = ticket.Id})" class="dropdown-item"><i class="zwicon-trash"></i>Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="clearfix m-4"></div>
+                </div>
+            </div>
+
+            @*<nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item pagination-prev"><a class="page-link" href="#"><i class="zwicon-arrow-left"></i></a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" href="#">6</a></li>
+                    <li class="page-item pagination-next"><a class="page-link" href="#"><i class="zwicon-arrow-right"></i></a></li>
+                </ul>
+            </nav>*@
+        </div>
+    </section>
+    @section scripts{
+        <script>
+            $(function () {
+
+                $("#Search").keyup(function (e) {
+                    var n = $("#Name").val();
+                    var sn = $("#SurName").val();
+                    $.get("/Tickets/Index?Name=" + n + "&SurName=" + sn, function (r) {
+                        //update ui with results
+                        $("#resultsTable").html(r);
+                    });
+
+                });
+
+            });
+        </script>
+    }
+    
+</main>
